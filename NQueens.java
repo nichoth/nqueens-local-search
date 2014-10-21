@@ -37,8 +37,9 @@ public class NQueens{
        Compute the number of pairs that don't conflict
      */
     public int fitness() {
-		// fill in
-		return 0;
+		// there are 28 pairs of queens total
+    	// (combinations of 8)
+		return 28 - cost();
 	}
     
     /**
