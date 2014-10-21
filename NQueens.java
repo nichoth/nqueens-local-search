@@ -7,8 +7,7 @@ import java.util.Scanner;
 import java.util.Random;
 
 public class NQueens{
-    static int size = 8;
-    // state
+    private int size = 8;
     int[] state = new int[size];  // rows 0 to size - 1
     Random rand = new Random();
 
@@ -22,34 +21,48 @@ public class NQueens{
     }
 
     public void printBoard() {
-	for (int row=0; row<size; row++) {
-	    for (int col=0; col<size; col++) {
-			if (state[row] == col) {
-			    System.out.print("1 ");
-			} else {
-			    System.out.print("0 ");
-			}
-	    }
-	    System.out.println("");
-	}
-	
+		for (int row=0; row<size; row++) {
+		    for (int col=0; col<size; col++) {
+				if (state[row] == col) {
+				    System.out.print("1 ");
+				} else {
+				    System.out.print("0 ");
+				}
+		    }
+		    System.out.println("");
+		}
     }
     
     /**
        Compute the number of pairs that don't conflict
      */
     public int fitness() {
-	// fill in
-	return 0;
-    }
-
+		// fill in
+		return 0;
+	}
+    
     /**
-       Each queen is specified by its row, e.g. queen 0 is in row 0
-       The method countDiagonal returns a count of the number of pairs of queens
-       along a diagonal that attack each other.
+     * 
+     * @return A count of the number of pairs of queens attacking each other
+     * 		via diagonal.
      */
     public int countDiagonal() {
-	return 0;
+    	
+    	int attacking = 0;
+    	
+    	for (int i = 0; i<size; i++) { // for each row (for each queen)
+    		// check if row[i] + 1 == row[i+1]
+    		for (int j = i+1; j<size; j++) {
+    			if (state[i] + (j-i) == state[j]) { // check right diags
+    				attacking++;
+    			}
+    			if (state[i] + (i-j) == state[j]) { // check left diags
+    				attacking++;
+    			}
+    		}
+    	}
+    	
+    	return attacking;
     }
 
 
@@ -61,25 +74,23 @@ public class NQueens{
        This is just the condition that state[j] == state[i]
      */
     public int countCol() {
-	int count = 0;
-	for (int i=0; i<size; i++) {
-	    for (int j=i+1; j<size; j++) {
-		if (state[i] == state[j]) {
-		    count++;
+		int count = 0;
+		for (int i=0; i<size; i++) {
+		    for (int j=i+1; j<size; j++) {
+				if (state[i] == state[j]) {
+				    count++;
+				}
+		    }
 		}
-	    }
-	}
-	return count;
+		return count;
     }
 
 
     /**
-       Compute the number of pairs of queens that are attacking each other
+       Compute the number of pairs of queens that are attacking each other.
      */
     public int cost() {
-	// fill in
-	
-	return 0;
+		return countCol() + countDiagonal();
     }
 
     /**
@@ -90,24 +101,27 @@ public class NQueens{
 
 
     public static void main(String[] args) {
-	NQueens board = new NQueens(size);
-	board.printBoard();
-	System.out.println("number of pairs of attacking Queens via cols: " + 
-			board.countCol());
-
-
-	/*
-	 Random rand = new Random();
-	 for (int i=0; i<10; i++) {
-	     System.out.println(rand.nextInt(5) + 1);
-	 }
-
-	 /*
-        String msg;
-        Scanner scan = new Scanner(System.in);
-        System.out.println("Enter a line of text");
-        msg = scan.nextLine();
-        System.out.println(msg);
-	 */
+		NQueens board = new NQueens(8);
+		board.printBoard();
+		System.out.println("number of pairs of attacking Queens via cols: " + 
+				board.countCol());
+		System.out.println("number of pairs attacking via diagonal: " + 
+				board.countDiagonal());
+		System.out.println("cost: " + board.cost());
+	
+	
+		/*
+		 Random rand = new Random();
+		 for (int i=0; i<10; i++) {
+		     System.out.println(rand.nextInt(5) + 1);
+		 }
+	
+		 /*
+	        String msg;
+	        Scanner scan = new Scanner(System.in);
+	        System.out.println("Enter a line of text");
+	        msg = scan.nextLine();
+	        System.out.println(msg);
+		 */
      }
   }
