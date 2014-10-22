@@ -3,6 +3,8 @@ I used rows instead of cols because it was easier to
 print the board
  */
 
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Random;
 
@@ -12,13 +14,21 @@ public class NQueens{
     Random rand = new Random();
 
 
-    public NQueens(int s) {
+	public NQueens(int s) {
 		size = s;
 		// initialize board
 		for (int i=0; i<size; i++) {
 		    state[i] = rand.nextInt(size);  // position of Q in row i
 		}
-    }
+	}
+	
+	/**
+	 * Create a board with the given state.
+	 * @param state	Array of board state.
+	 */
+	public NQueens(int[] state) {
+		this.state = state;
+	}
 
     public void printBoard() {
 		for (int row=0; row<size; row++) {
@@ -38,7 +48,6 @@ public class NQueens{
      */
     public int fitness() {
 		// there are 28 pairs of queens total
-    	// (combinations of 8)
 		return 28 - cost();
 	}
     
@@ -50,7 +59,6 @@ public class NQueens{
     public int countDiagonal() {
     	
     	int attacking = 0;
-    	
     	for (int i = 0; i<size; i++) { // for each row (for each queen)
     		// check if row[i] + 1 == row[i+1]
     		for (int j = i+1; j<size; j++) {
@@ -62,7 +70,6 @@ public class NQueens{
     			}
     		}
     	}
-    	
     	return attacking;
     }
 
@@ -93,17 +100,56 @@ public class NQueens{
     public int cost() {
 		return countCol() + countDiagonal();
     }
-
+    
     /**
-       Neighborhood of a state is all states that differ in exactly one row
-       for local search.
+     * Create a copy of this game, with the given row changed to a
+     * random spot.
+     * @param row	The row to mutate.
+     * @return NQueens object identical to this one but 
+     * 	with the given row changed randomly.
      */
+    private NQueens createNeighbor(int row) {
+    	int[] board = new int[size];
+     	for (int i=0; i<size; i++) {
+     		board[i] = this.state[i];
+     	}
+     	board[row] = rand.nextInt(size);
+     	return new NQueens(board);
+    }
+    
+    /**
+     * Neighborhood of a state is all states that differ in exactly one row
+     * for local search.
+     * @return Boards that differ in one row from this one.
+     */
+    public HashSet<NQueens> makeNeighborhood() {
+    	HashSet<NQueens> nHood = new HashSet<NQueens>();
+    	for (int i=0; i<size; i++) {
+    		nHood.add( createNeighbor(i) );
+    	}
+    	return nHood;
+    }
 
 
 
     public static void main(String[] args) {
 		NQueens board = new NQueens(8);
 		board.printBoard();
+		
+		// find the best neighbor
+		// do this until board.fitness() == max
+		// if none of the neighbors are more fit, try again
+		// put this in a different method so we can do it recursively.
+		HashSet<NQueens> neighbors = board.makeNeighborhood();
+		Iterator<NQueens> iter = neighbors.iterator();
+		NQueens best = null;
+		while (iter.hasNext()) {
+			NQueens q = iter.next();
+			if ( q.fitness() > board.fitness() ) {
+				best = q;
+			}
+		}
+		
 		System.out.println("number of pairs of attacking Queens via cols: " + 
 				board.countCol());
 		System.out.println("number of pairs attacking via diagonal: " + 
