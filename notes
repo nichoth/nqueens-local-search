@@ -1,9 +1,0 @@
-8 Queens local search
-
-place all the queens on the board, 1 per row per column
-
-This state is a node. From here the neighbors are all the states in which you move just 1 queen. 
-
-Create all neighboring states and then evaluate which one is best and move to that one and repeat the process.
-
-cost = the number of queens that are attacking each other
