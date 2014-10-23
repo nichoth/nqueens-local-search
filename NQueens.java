@@ -9,34 +9,34 @@ public class NQueens {
 		this.iterations = 0;
 	}
 	
-	// this doesn't find a solution, but reduces the cost to 1 or 2.
-	// the stack overflows if we increase the number of iterations
-	// how can we do this without a stack overflow?
-	// Haskell uses a lazy recursion thing that would work. 
 	public Board solve(Board board) {
-    	// find the best neighbor
-		// do this until board.fitness() == maxFitness
-		// if none of the neighbors are more fit, try again
-    	
-    	if (board.fitness() == board.maxFitness || iterations > 7000) {
-			return board;
-		}
-    	
-		Iterator<Board> iter = board.makeNeighborhood().iterator();
-		Board best = board;
-		while (iter.hasNext()) {
-			Board b = iter.next();
-			if ( b.fitness() > best.fitness() ) {
-				best = b;
+
+		while (board.fitness() < board.maxFitness && iterations < 8000) {
+			Iterator<Board> iter = board.makeNeighborhood().iterator();
+			while (iter.hasNext()) {
+				Board b = iter.next();
+				if ( b.fitness() > board.fitness() ) {
+					board = b;
+				}
 			}
-		}
-		if (best.fitness() > board.fitness()) {
 			iterations++;
-			return solve(best);
-		} else {
-			iterations++;
-			return solve(board);
 		}
+
+		return board;
+    }
+
+    /**
+     * Randomly geerate the given number of boards and then solve them.
+     */
+    public ArrayList<Board> solve(int iters) {
+
+    	ArrayList<Board> solutions = new ArrayList<Board>();
+    	for (int i=0; i<iters; i++) {
+    		Board b = new Board(8);
+    		Board solution = solve(b);
+    		solutions.add(solution);
+    	}
+    	return solutions;
     }
 	
 	public static void main(String[] args) {
@@ -59,6 +59,6 @@ public class NQueens {
 				solution.countDiagonal());
 		System.out.println("cost: " + solution.cost());
 		System.out.println("iterations: " + q.iterations);
-     }
+    }
 	
 }
