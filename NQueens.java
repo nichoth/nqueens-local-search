@@ -1,13 +1,11 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 
 public class NQueens {
 	
-	int iterations;
-	
 	public NQueens() {
-		this.iterations = 0;
 	}
 	
 	/**
@@ -15,59 +13,53 @@ public class NQueens {
 	 * @param board
 	 * @return
 	 */
-	public Board solve(Board board) {
+	public Solution solve(Board board) {
+		
+		int iters = 0;
+		HashMap<Integer,Integer> fitnessMap = new HashMap<Integer,Integer>();
 
-		while (board.fitness() < board.maxFitness && iterations < 10000) {
+		while (board.fitness() < board.maxFitness && iters < 10000) {
 			Iterator<Board> iter = board.makeNeighborhood().iterator();
 			while (iter.hasNext()) {
 				Board b = iter.next();
 				if ( b.fitness() > board.fitness() ) {
 					board = b;
+					fitnessMap.put(board.fitness(), iters);
 				}
 			}
-			iterations++;
+			iters++;
 		}
 
-		return board;
+		return new Solution(board, iters, fitnessMap);
     }
 
     /**
-     * Generate a bunch of baords and then solve them.
+     * Generate a bunch of boards and then solve them.
      */
-    public ArrayList<Board> solve(int iters) {
+    public ArrayList<Solution> solve(int iters) {
 
-    	ArrayList<Board> solutions = new ArrayList<Board>();
+    	ArrayList<Solution> solutions = new ArrayList<Solution>();
     	for (int i=0; i<iters; i++) {
     		Board b = new Board(8);
-    		Board solution = solve(b);
+    		Solution solution = solve(b);
     		solutions.add(solution);
     	}
     	return solutions;
     }
 	
+    // create a board and solve it, print the solution
 	public static void main(String[] args) {
 		
 		// create a random board and print it
 		Board board = new Board(8);
 		board.printBoard();
 		
-		System.out.println("number of pairs of attacking Queens via cols: " + 
-				board.countCol());
-		System.out.println("number of pairs attacking via diagonal: " + 
-				board.countDiagonal());
-		System.out.println("cost: " + board.cost());
+		System.out.println();
 		
 		// solve the board and print the solution
 		NQueens q = new NQueens();
-		Board solution = q.solve(board);
-		solution.printBoard();
-		
-		System.out.println("number of pairs of attacking Queens via cols: " + 
-				solution.countCol());
-		System.out.println("number of pairs attacking via diagonal: " + 
-				solution.countDiagonal());
-		System.out.println("cost: " + solution.cost());
-		System.out.println("iterations: " + q.iterations);
+		Solution s = q.solve(board);
+		s.printSolution();
     }
 	
 }

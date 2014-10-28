@@ -4,8 +4,6 @@ print the board
  */
 
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Scanner;
 import java.util.Random;
 
 public class Board{
@@ -52,6 +50,12 @@ public class Board{
 		    }
 		    System.out.println("");
 		}
+		
+		System.out.println("number of pairs of attacking Queens via cols: " + 
+				countCol());
+		System.out.println("number of pairs attacking via diagonal: " + 
+				countDiagonal());
+		System.out.println("cost: " + cost() + ",    fitness: " + fitness());
     }
     
     /**
