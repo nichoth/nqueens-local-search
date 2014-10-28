@@ -1,6 +1,7 @@
 # 8 Queens local search #
 
 Algorithm:
+
 * Place all the queens on the board, 1 per row per column
 
 * This state is a node. From here the neighbors are all the states in which you move just 1 queen to a random spot in the same row. 
