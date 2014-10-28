@@ -11,4 +11,6 @@ Algorithm:
 *Cost* = the number of queens that are attacking each other
 
 ## Results ##
-This is implemented recursively and produces a stack overflow error before it finds a solution. It is able to reduce the cost to 1 or 2 within 7000 iterations.
+This is local search implemented with a while loop in Java.
+
+The algorithm reaches local maximums that can't be solved by increasing iterations.
