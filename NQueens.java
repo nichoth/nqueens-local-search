@@ -1,9 +1,14 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Random;
 
 
 public class NQueens {
+	
+	int maxIters = 10000;
 	
 	public NQueens() {
 	}
@@ -18,7 +23,7 @@ public class NQueens {
 		int iters = 0;
 		HashMap<Integer,Integer> fitnessMap = new HashMap<Integer,Integer>();
 
-		while (board.fitness() < board.maxFitness && iters < 10000) {
+		while (board.fitness() < board.maxFitness && iters < maxIters) {
 			Iterator<Board> iter = board.makeNeighborhood().iterator();
 			while (iter.hasNext()) {
 				Board b = iter.next();
@@ -45,6 +50,40 @@ public class NQueens {
     		solutions.add(solution);
     	}
     	return solutions;
+    }
+    
+    /**
+     * Solve with simulated annealing.
+     * @param b
+     * @param schedule
+     * @return
+     */
+    public Solution annealing(Board board, Map schedule) {
+    	
+    	int iters = 0;
+    	Random r = new Random();
+		HashMap<Integer,Integer> fitnessMap = new HashMap<Integer,Integer>();
+
+		while (board.fitness() < board.maxFitness && iters < maxIters) {
+			// do annealing here
+			ArrayList<Board> neighbors = board.makeNeighborhood();
+			Board n = neighbors.get(r.nextInt( neighbors.size() ));
+			
+			if (n.fitness() > board.fitness()) {
+				// choose this neighbor
+				board = n;
+			} else {
+				// choose this neighbor with a certain probability
+				// Probability decreases based on the badness of the neighbor,
+				// and according to the schedule.
+			}
+				
+			
+			fitnessMap.put(board.fitness(), iters);
+			iters++;
+		}
+
+		return new Solution(board, iters, fitnessMap);
     }
 	
     // create a board and solve it, print the solution

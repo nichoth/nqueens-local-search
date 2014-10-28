@@ -3,6 +3,7 @@ I used rows instead of cols because it was easier to
 print the board
  */
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 
@@ -137,8 +138,8 @@ public class Board{
      * for local search.
      * @return Boards that differ in one row from this one.
      */
-    public HashSet<Board> makeNeighborhood() {
-    	HashSet<Board> nHood = new HashSet<Board>(size);
+    public ArrayList<Board> makeNeighborhood() {
+    	ArrayList<Board> nHood = new ArrayList<Board>(size);
     	for (int i=0; i<size; i++) {
     		nHood.add( createNeighbor(i) );
     	}
