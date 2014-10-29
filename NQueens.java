@@ -52,13 +52,18 @@ public class NQueens {
     	return solutions;
     }
     
+    // map iterations to temperature
+    public int schedule(int iter) {
+    	return maxIters - iter;
+    }
+    
     /**
      * Solve with simulated annealing.
      * @param b
      * @param schedule
      * @return
      */
-    public Solution annealing(Board board, Map schedule) {
+    public Solution annealing(Board board) {
     	
     	int iters = 0;
     	Random r = new Random();
@@ -73,9 +78,15 @@ public class NQueens {
 				// choose this neighbor
 				board = n;
 			} else {
+				
+				int deltaF = n.fitness() - board.fitness();
 				// choose this neighbor with a certain probability
 				// Probability decreases based on the badness of the neighbor,
 				// and according to the schedule.
+				
+				// the probability is e ^ deltaF/schedule(iter)
+				// how to choose the neighbor with this probability?
+				
 			}
 				
 			
@@ -89,7 +100,6 @@ public class NQueens {
     // create a board and solve it, print the solution
 	public static void main(String[] args) {
 		
-		// create a random board and print it
 		Board board = new Board(8);
 		board.printBoard();
 		
