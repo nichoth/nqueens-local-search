@@ -24,10 +24,10 @@ public class Solution {
 		
 		// print fitness vs. # of iterations
 		System.out.println();
-		System.out.println("fitness | iteration");
+		System.out.println("iteration  |  fitness");
 		SortedSet<Integer> fs = new TreeSet<Integer>(fitnessMap.keySet());
 		for (Integer f : fs) {
-			System.out.println("   " + f + "          " + fitnessMap.get(f));
+			System.out.println("   " + f + "\t\t" + fitnessMap.get(f));
 		}
 	}
 }

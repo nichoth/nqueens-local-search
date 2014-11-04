@@ -1,14 +1,30 @@
-# 8 Queens - Simulated Annealing #
+# N Queens #
 
-Algorithm:
+## Local Search ##
+The first iteration uses a local search algorithm:
 
-* Place all the queens on the board, 1 per row per column
+	* Start with a randomly arranged board with one queen per row
+	* Generate neighboring states where each neighbor is a board where one queen has been moved to a random spot within its row. Each iteration generates 8 nieghbors.
+	* Pick the neighbor with the best performance, then repeat.
 
-* This state is a node. From here the neighbors are all the states in which you move just 1 queen to a random spot in the same row. 
+This algorithm is incomplete. It will find a local maximum but not necessarilly a global maximum.
 
-*Cost* = the number of queens that are attacking each other
+The program usually reacheas a maximum quickly, within around 50 iterations.
 
-## Results ##
-The simulated annealing 'schedule' (the function from time to probability) needs to be adjusted. As it is naive local search performs better.
+Originally it was implemented recursively in Java, which caused a stack overflow around 7000 iterations. It was changed to using while loops which use space efficiently. **Can you implement tail-call recursion in Java?**
 
-Bug in saved data for solutions?
+
+## Simulated Annealing ##
+Simulated Annealing will find a global maximum. It uses rondomeness to avoid getting stuck at a local maximum. The algorithm is similar to local search:
+
+	* Start with a random board
+	* Generate neighbor states, and choose a random neighbor.
+	* If the nieghbor improves the situation, it is accepted.
+	* If the neighbor is worse, it is accepted with a probablility that decreases exponentially with the badness of the move. The probability also decreases based on a "schedule" -- a function that maps time to "temperature".
+
+See page 126. The probability of accepting a bad move is e ^ (∆E/T), where ∆E is the change in fitness, and T is the temperature (the value returned by the schedule).
+
+The schedule `100 / iteration` seems to work well. It always finds a solution within a few hundred to ~3000 iterations.
+
+**How do we find the best schedule function?**
+

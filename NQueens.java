@@ -27,7 +27,7 @@ public class NQueens {
 				Board b = iter.next();
 				if ( b.fitness() > board.fitness() ) {
 					board = b;
-					fitnessMap.put(board.fitness(), iters);
+					fitnessMap.put(iters, board.fitness());
 				}
 			}
 			iters++;
@@ -53,7 +53,7 @@ public class NQueens {
     // map iterations to temperature
     // how do we make this good?
     public static int schedule(int iter) {
-    	return maxIters - (2*iter);
+    	return 100/(iter+1);
     }
     
     /**
@@ -67,7 +67,7 @@ public class NQueens {
     	Random r = new Random();
 		HashMap<Integer,Integer> fitnessMap = new HashMap<Integer,Integer>();
 
-		while (board.fitness() < board.maxFitness && iters < maxIters) {
+		while (board.fitness() < board.maxFitness && iters <= maxIters) {
 			// do annealing here
 			// see page 126 for algorithm
 			// * pick a random neighbor
@@ -82,16 +82,18 @@ public class NQueens {
 			ArrayList<Board> neighbors = board.makeNeighborhood();
 			Board n = neighbors.get(r.nextInt( neighbors.size() ));
 			
-			if (n.fitness() > board.fitness()) {
+			if (n.fitness() >= board.fitness()) {
 				board = n;
 			} else {
 				// the probability is e ^ deltaF/schedule(iter)
 				int deltaF = n.fitness() - board.fitness();
 				double prob = Math.exp(deltaF/(float)schedule(iters));
-				
+//				System.out.println( prob );
+//				System.out.println( deltaF );
 //				System.out.println( schedule(iters) );
 //				System.out.println( deltaF/(float)schedule(iters) );
 //				System.out.println( (int)Math.floor(prob*1000) );
+//				System.out.println( r.nextInt(1000) );
 				
 				
 				if (r.nextInt(10000) <= (int)Math.floor(prob*10000)) {
@@ -100,8 +102,9 @@ public class NQueens {
 				
 			}
 				
-			
-			fitnessMap.put(board.fitness(), iters);
+			if (iters % 50 == 0) {
+				fitnessMap.put(iters, board.fitness());
+			}
 			iters++;
 		}
 
