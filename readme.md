@@ -14,6 +14,7 @@ The program usually reacheas a maximum quickly, within around 50 iterations.
 Originally it was implemented recursively in Java, which caused a stack overflow around 7000 iterations. Using while loops is efficient and you can do infinite iterations. **Can you implement tail-call recursion in Java?**
 
 Space complexity = the size of the neighborhood?
+
 Time = worst case number of boards that you have to look at. **What is this for incomplete algorithms?**
 
 ## Simulated Annealing ##
