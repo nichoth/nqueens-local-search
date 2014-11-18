@@ -1,5 +1,11 @@
 # N Queens #
 
+Solve a random board with simulated annealing:
+    $ javac NQueens.java
+    $ java NQueens
+
+To use the local search algorithm, edit the main method in `NQueens`. 
+
 ## Local Search ##
 The first iteration uses a local search algorithm:
 
@@ -18,7 +24,7 @@ Space complexity = the size of the neighborhood?
 Time = worst case number of boards that you have to look at. **What is this for incomplete algorithms?**
 
 ## Simulated Annealing ##
-Simulated Annealing will find a global maximum. It uses rondomeness to avoid getting stuck at a local maximum. The algorithm is similar to local search:
+Simulated Annealing will find a global maximum. It uses rondomness to avoid getting stuck at a local maximum. The algorithm is similar to local search:
 
 * Start with a random board
 * Generate neighbor states, and choose a random neighbor.
