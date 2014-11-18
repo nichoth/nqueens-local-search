@@ -1,6 +1,7 @@
 # N Queens #
 
 Solve a random board with simulated annealing:
+
     $ javac NQueens.java
     $ java NQueens
 
